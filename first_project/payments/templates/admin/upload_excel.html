@@ -1,0 +1,43 @@
+{% extends "admin/base_site.html" %}
+
+{% block extrahead %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#upload-form').on('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+            url: "{% url 'admin:'|add:model_name|lower|add:'_upload_excel' %}",
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            success: function(response) {
+                if (response.success) {
+                    alert(response.message);
+                    window.location.reload();
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function() {
+                alert('An error occurred while uploading the file.');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<h1>Upload Excel File</h1>
+<form id="upload-form" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="file" required>
+    <button type="submit" class="button">Upload</button>
+</form>
+{% endblock %}

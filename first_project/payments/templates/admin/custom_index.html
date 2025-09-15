@@ -1,0 +1,11 @@
+{% extends "admin/index.html" %}
+{% block content %}
+<div class="module">
+    <table>
+        <caption>
+            <a href="{% url 'admin:upload_excel' %}" class="section">Upload Excel File</a>
+        </caption>
+    </table>
+</div>
+{{ block.super }}
+{% endblock %}

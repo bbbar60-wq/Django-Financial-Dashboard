@@ -1,0 +1,177 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        .login-container h2 {
+            color: #0056b3;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .input-field {
+            width: calc(100% - 24px);
+            padding: 12px;
+            margin: 10px 0 5px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            text-align: center;
+            transition: border-color 0.3s ease;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .input-field:focus {
+            border-color: #0056b3;
+        }
+
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+            text-align: center;
+        }
+
+        .password-wrapper .eye {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .login-button {
+            background-color: #0056b3;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            width: 100%;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .login-button:hover {
+            background-color: #003d82;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+            text-align: center;
+        }
+        .input-field {
+            width: calc(100% - 24px);
+            padding: 12px;
+            margin: 10px 0 5px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            text-align: center;
+            transition: border-color 0.3s ease;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #ffffff;
+            color: #000;
+        }
+
+        .input-field:-webkit-autofill,
+        .input-field:-webkit-autofill:hover,
+        .input-field:-webkit-autofill:focus,
+        .input-field:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 30px white inset !important;
+            -webkit-text-fill-color: #000 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Log In</h2>
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <input type="text" name="username" id="username" class="input-field" placeholder="Enter username">
+            <div class="error-message" id="usernameError"></div>
+
+            <div class="password-wrapper">
+                <input type="password" name="password" id="password" class="input-field" placeholder="Enter password">
+                <span class="eye" onclick="togglePasswordVisibility('password', this)">
+                    <svg id="eyeIcon" fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                        <g stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                            <path d="m1 12s4-8 11-8 11 8 11 8"/>
+                            <path d="m1 12s4 8 11 8 11-8 11-8"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </g>
+                    </svg>
+                </span>
+            </div>
+            <div class="error-message" id="passwordError"></div>
+
+            <button type="submit" class="login-button">Log In</button>
+        </form>
+    </div>
+
+    <script>
+        function togglePasswordVisibility(passwordId, eyeIconElement) {
+            const passwordField = document.getElementById(passwordId);
+            const eyeIcon = eyeIconElement.querySelector('svg');
+
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                eyeIcon.innerHTML = `
+                    <svg width="24" height="24" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 3L21 21" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M10.5 10.6771C10.1888 11.0296 10 11.4928 10 12C10 13.1045 10.8954 14 12 14C12.5072 14 12.9703 13.8112 13.3229 13.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M7.36185 7.5611C5.68002 8.73968 4.27894 10.4188 3 12C4.88856 14.991 8.2817 18 12 18C13.5499 18 15.0434 17.4772 16.3949 16.6508" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 6C16.0084 6 18.7015 9.1582 21 12C20.6815 12.5043 20.3203 13.0092 19.922 13.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                `;
+            } else {
+                passwordField.type = "password";
+                eyeIcon.innerHTML = `
+                    <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                        <g stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                            <path d="m1 12s4-8 11-8 11 8 11 8"/>
+                            <path d="m1 12s4 8 11 8 11-8 11-8"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </g>
+                    </svg>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{% extends "admin/change_list.html" %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+    .upload-excel-button {
+        margin-left: -600px;
+    }
+</style>
+{% endblock %}
+
+{% block object-tools %}
+    <div class="object-tools">
+        <ul>
+            <li>
+                <a href="{% url 'admin:'|add:model_name|add:'_upload_excel' %}" class="button upload-excel-button">Upload Excel File</a>
+            </li>
+        </ul>
+    </div>
+    {{ block.super }}
+{% endblock %}
